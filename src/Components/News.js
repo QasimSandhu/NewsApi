@@ -17,7 +17,7 @@ export class News extends Component {
         if (this.state.page + 1 > Math.ceil(this.state.totalResults / 20)) {
 
         } else {
-            const APiUrl = "https://newsapi.org/v2/everything?q=tesla&from=2023-08-22&sortBy=publishedAt&apiKey=91f50a86b7dd45e895aa659ad948a38b&page=1&&pageSize=20";
+            const APiUrl = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=91f50a86b7dd45e895aa659ad948a38b&page=1&&pageSize=20";
             const ApiData = await fetch(APiUrl);
             const parsedData = await ApiData.json();
             this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults })
@@ -25,7 +25,7 @@ export class News extends Component {
     }
 
     handlePreClick = async () => {
-        const APiUrl = `https://newsapi.org/v2/everything?q=tesla&from=2023-08-22&sortBy=publishedAt&apiKey=91f50a86b7dd45e895aa659ad948a38b&page=${this.state.page - 1}&pageSize=20`;
+        const APiUrl = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=91f50a86b7dd45e895aa659ad948a38b&page=${this.state.page - 1}&pageSize=20`;
         const ApiData = await fetch(APiUrl);
         const parsedData = await ApiData.json();
         this.setState({
@@ -35,7 +35,7 @@ export class News extends Component {
     }
 
     handleNextClick = async () => {
-        const APiUrl = `https://newsapi.org/v2/everything?q=tesla&from=2023-08-22&sortBy=publishedAt&apiKey=91f50a86b7dd45e895aa659ad948a38b&page=${this.state.page + 1}&pageSize=20`;
+        const APiUrl = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=91f50a86b7dd45e895aa659ad948a38b&page=${this.state.page + 1}&pageSize=20`;
         const ApiData = await fetch(APiUrl);
         const parsedData = await ApiData.json();
         this.setState({
@@ -47,7 +47,7 @@ export class News extends Component {
     render() {
         return (
             <div className='container my-3' >
-                <h2>News Headlines</h2>
+                <h2 className='text-center'>News Headlines</h2>
                 <div className="row">
                     {this.state.articles.map((element) => {
                         return <div className="col-md-3" key={element.url}>
@@ -57,7 +57,8 @@ export class News extends Component {
                 </div>
                 <div className="container d-flex justify-content-between">
                     <button type="button" disabled={this.state.page <= 1} className="btn btn-dark" onClick={this.handlePreClick}>&larr; Previous</button>
-                    <button type="button" className="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button>
+
+                    <button type="button" disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / 20)} className="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button>
                 </div>
             </div>
         )
